@@ -24,7 +24,7 @@ const Navbar = () => (
     position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 100,
     padding: '16px 24px',
     display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-    background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(12px)',
+    background: '#000',
     borderBottom: '1px solid rgba(255,255,255,0.1)',
   }}>
     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -46,27 +46,9 @@ const Navbar = () => (
         boxShadow: '4px 4px 0px 0px rgba(0,0,0,1)', cursor: 'pointer',
       }}
     >
-      Join Us <Zap size={16} />
+      Join Us
     </motion.button>
   </nav>
-);
-
-const FloatingIcon = ({ children, delay = 0, style = {} }) => (
-  <motion.div
-    animate={{
-      y: [0, -20, 0],
-      rotate: [-5, 5, -5]
-    }}
-    transition={{
-      duration: 4,
-      repeat: Infinity,
-      ease: "easeInOut",
-      delay
-    }}
-    style={{ position: 'absolute', zIndex: 30, ...style }}
-  >
-    {children}
-  </motion.div>
 );
 
 const ExhibitCard = ({ title, description, color, image, rotation = 0, github = '#', linkedin = '#' }) => {
@@ -109,22 +91,22 @@ const ExhibitCard = ({ title, description, color, image, rotation = 0, github = 
 const row1Members = [
   { name: "Sanidhya Madeshia", role: "Coordinator", color: "bg-[#ccff00]", img: "./2k23/sanidhya_madeshiya.jpeg", github: "#", linkedin: "#" },
   { name: "Yash Agarwal", role: "Co-Coordinator", color: "bg-[#ff00ff]", img: "./2k23/yash_agrawal.jpeg", github: "#", linkedin: "#" },
-  { name: "Abhishek Raj", role: "Codebase Member", color: "bg-white", img: "./2k23/abhishek_raj.jpeg", github: "#", linkedin: "#" },
-  { name: "Dipesh Mundotiya", role: "Codebase Member", color: "bg-[#00ffff]", img: "./2k23/dipesh_mudotiya.jpeg", github: "#", linkedin: "#" },
-  { name: "Parth Rudrawar", role: "Codebase Member", color: "bg-[#ccff00]", img: "./2k23/parth_rudrawar.jpeg", github: "#", linkedin: "#" },
-  { name: "Ayush Singh", role: "Codebase Member", color: "bg-[#ff00ff]", img: "./2k23/ayush_singh.jpeg", github: "#", linkedin: "#" },
-  { name: "Nishika", role: "Codebase Member", color: "bg-white", img: "./2k23/nishika.jpeg", github: "#", linkedin: "#" },
+  { name: "Abhishek Raj", role: "Core Member", color: "bg-white", img: "./2k23/abhishek_raj.jpeg", github: "#", linkedin: "#" },
+  { name: "Dipesh Mundotiya", role: "Core Member", color: "bg-[#00ffff]", img: "./2k23/dipesh_mudotiya.jpeg", github: "#", linkedin: "#" },
+  { name: "Parth Rudrawar", role: "Core Member", color: "bg-[#ccff00]", img: "./2k23/parth_rudrawar.jpeg", github: "#", linkedin: "#" },
+  { name: "Ayush Singh", role: "Core Member", color: "bg-[#ff00ff]", img: "./2k23/ayush_singh.jpeg", github: "#", linkedin: "#" },
+  { name: "Nishika", role: "Core Member", color: "bg-white", img: "./2k23/nishika.jpeg", github: "#", linkedin: "#" },
 ];
 
 const row2Members = [
-  { name: "Raghav Gupta", role: "Coordinator", color: "bg-[#ccff00]", img: "./2k24/raghav_gupta.jpeg", github: "#", linkedin: "#" },
-  { name: "Ayush Mittal", role: "Co-Coordinator", color: "bg-[#ff00ff]", img: "./2k24/ayush_mittal.jpeg", github: "#", linkedin: "#" },
-  { name: "Divyam Saraf", role: "Codebase Member", color: "bg-white", img: "./2k24/divyam_saraf.jpeg", github: "#", linkedin: "#" },
-  { name: "Gaurav Patil", role: "Codebase Member", color: "bg-[#00ffff]", img: "./2k24/gaurav_patil.jpeg", github: "#", linkedin: "#" },
-  { name: "Megh", role: "Codebase Member", color: "bg-[#ccff00]", img: "./2k24/megh.jpeg", github: "#", linkedin: "#" },
-  { name: "Satyam Rajawat", role: "Codebase Member", color: "bg-[#ff00ff]", img: "./2k24/satyam_rajawat.jpeg", github: "#", linkedin: "#" },
-  { name: "Shyam Mohan", role: "Codebase Member", color: "bg-white", img: "./2k24/shyam_mohan.jpeg", github: "#", linkedin: "#" },
-  { name: "Ujjawal Sharma", role: "Codebase Member", color: "bg-[#00ffff]", img: "./2k24/ujjawal_sharma.jpeg", github: "#", linkedin: "#" },
+  { name: "Raghav Gupta", role: "App Development Lead", color: "bg-[#ccff00]", img: "./2k24/raghav_gupta.jpeg", github: "#", linkedin: "#" },
+  { name: "Ayush Mittal", role: "Web 3 Lead", color: "bg-[#ff00ff]", img: "./2k24/ayush_mittal.jpeg", github: "#", linkedin: "#" },
+  { name: "Divyam Saraf", role: "Web Development Lead", color: "bg-white", img: "./2k24/divyam_saraf.jpeg", github: "#", linkedin: "#" },
+  { name: "Gaurav Patil", role: "Cloud Lead", color: "bg-[#00ffff]", img: "./2k24/gaurav_patil.jpeg", github: "#", linkedin: "#" },
+  { name: "Megh", role: "Social Media Lead", color: "bg-[#ccff00]", img: "./2k24/megh.jpeg", github: "#", linkedin: "#" },
+  { name: "Satyam Rajawat", role: "Web Development Lead", color: "bg-[#ff00ff]", img: "./2k24/satyam_rajawat.jpeg", github: "#", linkedin: "#" },
+  { name: "Shyam Mohan", role: "Web Development Lead", color: "bg-white", img: "./2k24/shyam_mohan.jpeg", github: "#", linkedin: "#" },
+  { name: "Ujjawal Sharma", role: "AI/ML Lead", color: "bg-[#00ffff]", img: "./2k24/ujjawal_sharma.jpeg", github: "#", linkedin: "#" },
 ];
 
 // Seeded random rotations for cards
@@ -183,14 +165,14 @@ function ProjectsSection() {
   const projEnd = 0.90;
   const rawIdx = progress <= projStart ? 0
     : progress >= projEnd ? N - 1
-    : ((progress - projStart) / (projEnd - projStart)) * (N - 1);
+      : ((progress - projStart) / (projEnd - projStart)) * (N - 1);
 
   const stepIdx = Math.min(Math.floor(rawIdx), N - 2);
   const t = Math.max(0, Math.min(1, rawIdx - stepIdx));
   const et = easeInOut(t);
 
   // Position presets (% of viewport)
-  const BIG = { x: 38, y: 50, w: 50, h: 82 };
+  const BIG = { x: 38, y: 53, w: 50, h: 80 };
   const PREV = { x: 18, y: 13, w: 9, h: 16 };
   const NEXT = { x: 80, y: 80, w: 14, h: 24 };
 
@@ -257,7 +239,7 @@ function ProjectsSection() {
   const descIdx = Math.min(Math.round(rawIdx), N - 1);
   const descOpacity = progress < projStart ? firstGrow
     : progress > projEnd ? 0
-    : (t < 0.2 || t > 0.8) ? 1 : Math.max(0, 1 - Math.abs(t - 0.5) * 0.5);
+      : (t < 0.2 || t > 0.8) ? 1 : Math.max(0, 1 - Math.abs(t - 0.5) * 0.5);
 
   return (
     <div
@@ -275,7 +257,7 @@ function ProjectsSection() {
             fontSize: 12, fontWeight: 700, textTransform: 'uppercase',
             letterSpacing: '0.15em', color: '#888',
           }}>
-            Our Projects
+            Our Events
           </span>
         </div>
 
@@ -292,7 +274,7 @@ function ProjectsSection() {
             color: '#1a1a1a', margin: 0, textAlign: 'center',
           }}>
             Our<br />
-            <span style={{ color: '#555' }}>Projects</span>
+            <span style={{ color: '#555' }}>Events</span>
           </h2>
         </div>
 
@@ -364,13 +346,6 @@ function ProjectsSection() {
             }}>
               {projectsData[descIdx].desc}
             </p>
-            <a href="#" style={{
-              fontSize: 13, color: '#1a1a1a', fontWeight: 700,
-              textDecoration: 'underline', marginTop: 20,
-              display: 'inline-block', textUnderlineOffset: 4,
-            }}>
-              Discover More
-            </a>
           </div>
         )}
       </div>
@@ -428,9 +403,9 @@ function TeamSection() {
   // Row 1 opacity: fades in as it enters, fades out as it exits
   const row1Opacity = progress < 0.02 ? 0
     : progress < 0.05 ? (progress - 0.02) / 0.03
-    : progress < 0.38 ? 1
-    : progress < 0.42 ? 1 - (progress - 0.38) / 0.04
-    : 0;
+      : progress < 0.38 ? 1
+        : progress < 0.42 ? 1 - (progress - 0.38) / 0.04
+          : 0;
 
   // --- Row 2: left → right ---
   const row2Progress = progress < 0.48 ? 0 : progress < 0.85 ? (progress - 0.48) / 0.37 : 1;
@@ -439,14 +414,14 @@ function TeamSection() {
   // Row 2 opacity
   const row2Opacity = progress < 0.48 ? 0
     : progress < 0.51 ? (progress - 0.48) / 0.03
-    : progress < 0.81 ? 1
-    : progress < 0.85 ? 1 - (progress - 0.81) / 0.04
-    : 0;
+      : progress < 0.81 ? 1
+        : progress < 0.85 ? 1 - (progress - 0.81) / 0.04
+          : 0;
 
   // --- Ending message: fades in after both rows complete ---
   const endingOpacity = progress < 0.85 ? 0
     : progress < 0.90 ? (progress - 0.85) / 0.05
-    : 1;
+      : 1;
 
   // Dynamic card rotation: base + scroll-driven sweep + per-card offset
   const getCardRotation = (index, rowProgress, baseRotations) => {
@@ -870,7 +845,7 @@ function HeroSection() {
               transform: 'translateY(220px)',
             }}
           >
-            The Free and Open Source Society of IIIT Kota.<br />
+            The Free and Open Source Club of IIIT Kota.<br />
             Promoting open source development and coding culture.
           </p>
         </div>
@@ -909,7 +884,7 @@ function HeroSection() {
                 cursor: 'pointer',
               }}
             >
-              Explore Projects <ArrowRight size={20} />
+              Explore <ArrowRight size={20} />
             </button>
           </div>
         </div>
@@ -929,21 +904,6 @@ function HeroSection() {
             zIndex: 30,
           }}
         >
-          <span style={{
-            fontSize: 10,
-            textTransform: 'uppercase',
-            letterSpacing: '0.3em',
-            fontWeight: 700,
-            color: '#ccff00',
-          }}>
-            Scroll Down
-          </span>
-          <div style={{
-            width: 2,
-            height: 48,
-            background: 'linear-gradient(to bottom, #ccff00, transparent)',
-            borderRadius: 999,
-          }} />
         </div>
 
       </div>
@@ -982,7 +942,7 @@ export default function App() {
           >
             <span>IIIT Kota CodeBase</span>
             <Zap size={120} />
-            <span>Open Source Society</span>
+            <span>Open Source Club</span>
             <Lightbulb size={120} />
             <span>IIIT Kota CodeBase</span>
           </motion.div>
@@ -997,11 +957,11 @@ export default function App() {
                 <span className="font-black text-3xl tracking-tighter">CodeBase</span>
               </div>
               <p className="text-white/50 max-w-sm text-lg font-bold uppercase tracking-tighter">
-                The Free and Open Source Society of IIIT Kota. Building a better future through code.
+                The Free and Open Source Club of IIIT Kota. Building a better future through code.
               </p>
             </div>
             <div>
-              <h4 className="font-black uppercase text-sm tracking-widest mb-6 text-[#ccff00]">Society</h4>
+              <h4 className="font-black uppercase text-sm tracking-widest mb-6 text-[#ccff00]">Club</h4>
               <ul className="space-y-4 text-white/60 font-black uppercase tracking-tighter">
                 <li><a href="#" className="hover:text-[#ccff00]">Members</a></li>
                 <li><a href="#" className="hover:text-[#ccff00]">Projects</a></li>
