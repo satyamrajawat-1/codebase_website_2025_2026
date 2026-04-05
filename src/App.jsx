@@ -131,6 +131,254 @@ const row2Members = [
 const cardRotations = [3, -4, 2, -3, 5, -2, 4, -5, 3, -4, 2, -3, 5, -2, 4, -5];
 
 // ============================================================
+//  PROJECTS SECTION — SCROLL-PINNED with card grow/shrink animation
+// ============================================================
+
+const projectsData = [
+  { name: "Hack the Chain", img: "https://picsum.photos/seed/hackchain/800/1000", desc: "Our flagship 36-hour hackathon bringing coders, designers, and innovators together." },
+  { name: "Open Source Day", img: "https://picsum.photos/seed/opensource/800/1000", desc: "A day dedicated to contributing to open source projects and celebrating FOSS." },
+  { name: "Code Sprint", img: "https://picsum.photos/seed/codesprint/800/1000", desc: "Rapid-fire coding challenges that push your problem-solving skills to the limit." },
+  { name: "Tech Talk Series", img: "https://picsum.photos/seed/techtalk/800/1000", desc: "Industry professionals and alumni sharing cutting-edge insights." },
+  { name: "Workshop Week", img: "https://picsum.photos/seed/workshop/800/1000", desc: "Hands-on sessions covering everything from web dev to machine learning." },
+];
+
+function ProjectsSection() {
+  const containerRef = useRef(null);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const containerHeight = containerRef.current.offsetHeight;
+      const viewportHeight = window.innerHeight;
+      const scrollRange = containerHeight - viewportHeight;
+      const scrolled = -rect.top;
+      const p = Math.max(0, Math.min(1, scrolled / scrollRange));
+      setProgress(p);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const N = projectsData.length;
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const easeInOut = (x) => x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
+
+  // --- Animation Phases ---
+  // 0.00 - 0.06: Title "Our Projects" visible
+  // 0.06 - 0.12: Title fades, first card grows up from bottom
+  // 0.12 - 0.90: Project transitions (N-1 transitions)
+  // 0.90 - 1.00: Section unpins
+
+  const titleOpacity = progress < 0.06 ? 1 : progress < 0.10 ? 1 - (progress - 0.06) / 0.04 : 0;
+
+  // First card grow from bottom
+  const firstGrow = progress < 0.06 ? 0 : progress < 0.12 ? (progress - 0.06) / 0.06 : 1;
+  const firstGrowEased = easeInOut(firstGrow);
+
+  // Continuous index across projects
+  const projStart = 0.12;
+  const projEnd = 0.90;
+  const rawIdx = progress <= projStart ? 0
+    : progress >= projEnd ? N - 1
+    : ((progress - projStart) / (projEnd - projStart)) * (N - 1);
+
+  const stepIdx = Math.min(Math.floor(rawIdx), N - 2);
+  const t = Math.max(0, Math.min(1, rawIdx - stepIdx));
+  const et = easeInOut(t);
+
+  // Position presets (% of viewport)
+  const BIG = { x: 38, y: 50, w: 50, h: 82 };
+  const PREV = { x: 18, y: 13, w: 9, h: 16 };
+  const NEXT = { x: 80, y: 80, w: 14, h: 24 };
+
+  // Get visual state for each card
+  const getCardState = (i) => {
+    // Before transitions: first card growing phase
+    if (progress < projStart) {
+      if (i === 0) {
+        return {
+          x: BIG.x, y: lerp(110, BIG.y, firstGrowEased),
+          w: lerp(14, BIG.w, firstGrowEased), h: lerp(24, BIG.h, firstGrowEased),
+          opacity: firstGrow > 0 ? 1 : 0, radius: 24, zIndex: 5,
+        };
+      }
+      // Next card preview appears near end of grow phase
+      if (i === 1 && firstGrow > 0.7) {
+        const a = (firstGrow - 0.7) / 0.3;
+        return {
+          x: NEXT.x, y: NEXT.y,
+          w: lerp(0, NEXT.w, a), h: lerp(0, NEXT.h, a),
+          opacity: a, radius: 16, zIndex: 3,
+        };
+      }
+      return null;
+    }
+
+    // During transitions
+    if (i === stepIdx) {
+      // Current big → shrinks to prev (top-left)
+      return {
+        x: lerp(BIG.x, PREV.x, et), y: lerp(BIG.y, PREV.y, et),
+        w: lerp(BIG.w, PREV.w, et), h: lerp(BIG.h, PREV.h, et),
+        opacity: 1, radius: lerp(24, 16, et), zIndex: Math.round(lerp(5, 2, et)),
+      };
+    }
+    if (i === stepIdx + 1) {
+      // Next → grows to big (center)
+      return {
+        x: lerp(NEXT.x, BIG.x, et), y: lerp(NEXT.y, BIG.y, et),
+        w: lerp(NEXT.w, BIG.w, et), h: lerp(NEXT.h, BIG.h, et),
+        opacity: 1, radius: lerp(16, 24, et), zIndex: Math.round(lerp(3, 5, et)),
+      };
+    }
+    if (i === stepIdx + 2 && et > 0.5) {
+      // Next-next appears at bottom-right
+      const a = (et - 0.5) / 0.5;
+      return {
+        x: NEXT.x, y: NEXT.y,
+        w: lerp(0, NEXT.w, a), h: lerp(0, NEXT.h, a),
+        opacity: a, radius: 16, zIndex: 1,
+      };
+    }
+    if (i === stepIdx - 1) {
+      // Old prev fades out
+      return {
+        x: PREV.x, y: PREV.y, w: PREV.w, h: PREV.h,
+        opacity: Math.max(0, 1 - et * 3), radius: 16, zIndex: 1,
+      };
+    }
+    return null;
+  };
+
+  // Current description text (for the big card)
+  const descIdx = Math.min(Math.round(rawIdx), N - 1);
+  const descOpacity = progress < projStart ? firstGrow
+    : progress > projEnd ? 0
+    : (t < 0.2 || t > 0.8) ? 1 : Math.max(0, 1 - Math.abs(t - 0.5) * 0.5);
+
+  return (
+    <div
+      ref={containerRef}
+      style={{ position: 'relative', height: '600vh', background: '#f0edd4' }}
+    >
+      <div style={{
+        position: 'sticky', top: 0, height: '100vh', width: '100%', overflow: 'hidden',
+      }}>
+        {/* Section label — bottom left */}
+        <div style={{
+          position: 'absolute', bottom: 30, left: 40, zIndex: 10,
+        }}>
+          <span style={{
+            fontSize: 12, fontWeight: 700, textTransform: 'uppercase',
+            letterSpacing: '0.15em', color: '#888',
+          }}>
+            Our Projects
+          </span>
+        </div>
+
+        {/* Title — centered */}
+        <div style={{
+          position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          opacity: titleOpacity, zIndex: 10, pointerEvents: 'none',
+        }}>
+          <h2 style={{
+            fontSize: 'clamp(48px, 8vw, 120px)',
+            fontWeight: 900, lineHeight: 0.95,
+            textTransform: 'uppercase', letterSpacing: '-0.05em',
+            color: '#1a1a1a', margin: 0, textAlign: 'center',
+          }}>
+            Our<br />
+            <span style={{ color: '#555' }}>Projects</span>
+          </h2>
+        </div>
+
+        {/* Project Cards */}
+        {projectsData.map((project, i) => {
+          const state = getCardState(i);
+          if (!state || state.opacity <= 0.01) return null;
+
+          return (
+            <div
+              key={i}
+              style={{
+                position: 'absolute',
+                left: `${state.x}%`,
+                top: `${state.y}%`,
+                width: `${state.w}vw`,
+                height: `${state.h}vh`,
+                transform: 'translate(-50%, -50%)',
+                opacity: state.opacity,
+                borderRadius: state.radius,
+                overflow: 'hidden',
+                zIndex: state.zIndex,
+                willChange: 'width, height, left, top, opacity',
+                boxShadow: state.w > 20
+                  ? '0 25px 80px rgba(0,0,0,0.18)'
+                  : '0 8px 24px rgba(0,0,0,0.12)',
+              }}
+            >
+              <img
+                src={project.img}
+                alt={project.name}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+              {/* Name overlay on big card */}
+              {state.w > 30 && (
+                <div style={{
+                  position: 'absolute', bottom: 0, left: 0, right: 0,
+                  padding: '40px 30px 30px',
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.7), transparent)',
+                }}>
+                  <h3 style={{
+                    fontSize: 'clamp(18px, 2.5vw, 32px)',
+                    fontWeight: 900, color: '#fff', textTransform: 'uppercase',
+                    letterSpacing: '-0.03em', margin: 0,
+                  }}>
+                    {project.name}
+                  </h3>
+                </div>
+              )}
+            </div>
+          );
+        })}
+
+        {/* Description text — right side */}
+        {progress >= 0.10 && progress < projEnd && (
+          <div style={{
+            position: 'absolute',
+            right: '5%',
+            top: '42%',
+            transform: 'translateY(-50%)',
+            maxWidth: 240,
+            opacity: descOpacity,
+            zIndex: 8,
+            transition: 'opacity 0.3s ease',
+          }}>
+            <p style={{
+              fontSize: 16, lineHeight: 1.7, color: '#555',
+              fontWeight: 500, margin: 0,
+            }}>
+              {projectsData[descIdx].desc}
+            </p>
+            <a href="#" style={{
+              fontSize: 13, color: '#1a1a1a', fontWeight: 700,
+              textDecoration: 'underline', marginTop: 20,
+              display: 'inline-block', textUnderlineOffset: 4,
+            }}>
+              Discover More
+            </a>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
 //  TEAM SECTION — SCROLL-PINNED with manual tracking
 //  Row 1: cards move right→left (2k23 batch)
 //  Row 2: cards move left→right (2k24 batch)
@@ -721,26 +969,8 @@ export default function App() {
       {/* TEAM SECTION — scroll-pinned with horizontal card movement */}
       <TeamSection />
 
-      {/* Mission Section */}
-      <section className="py-32 bg-[#ccff00] text-black overflow-hidden relative">
-        <div className="container mx-auto px-6 flex flex-col items-center text-center relative z-10">
-          <motion.div
-            initial={{ rotate: -5 }}
-            whileInView={{ rotate: 0 }}
-            className="bg-black text-white px-6 py-2 rounded-full font-black text-sm uppercase mb-8"
-          >
-            Our Mission
-          </motion.div>
-          <h2 className="text-6xl md:text-9xl font-black uppercase leading-none tracking-tighter mb-12 text-black drop-shadow-[6px_6px_0px_rgba(255,255,255,1)]">
-            Building the <br />
-            Future Together
-          </h2>
-
-          <button className="bg-black text-white px-12 py-6 rounded-full font-black text-xl uppercase hover:scale-105 transition-transform border-4 border-white shadow-[8px_8px_0px_0px_rgba(255,255,255,1)]">
-            Join the Community
-          </button>
-        </div>
-      </section>
+      {/* PROJECTS SECTION — scroll-pinned with card grow/shrink animation */}
+      <ProjectsSection />
 
       {/* Footer */}
       <footer className="bg-black py-20 border-t border-white/10 overflow-hidden">
