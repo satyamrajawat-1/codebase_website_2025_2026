@@ -157,28 +157,51 @@ function TeamSection() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Animation phases:
-  // 0.00 - 0.05: Title visible
-  // 0.05 - 0.45: Row 1 slides right→left
-  // 0.45 - 0.55: Brief pause, section slides up slightly to reveal row 2
-  // 0.55 - 0.95: Row 2 slides left→right
-  // 0.95 - 1.00: Section unpins
+  // ---- Animation Phases ----
+  // 0.00 - 0.08: Title centered, no cards visible
+  // 0.08 - 0.12: Title fades out
+  // 0.12 - 0.48: Row 1 enters from RIGHT, slides LEFT across viewport, exits LEFT
+  // 0.48 - 0.52: Transition pause
+  // 0.52 - 0.88: Row 2 enters from LEFT, slides RIGHT across viewport, exits RIGHT
+  // 0.88 - 1.00: Section unpins
 
-  // Row 1 translateX: starts at 600px (off-screen right), ends at -1200px (off-screen left)
-  const row1Progress = progress < 0.05 ? 0 : progress < 0.45 ? (progress - 0.05) / 0.40 : 1;
-  const row1X = 600 - row1Progress * 1800;
+  // --- Title ---
+  const titleOpacity = progress < 0.08
+    ? 1
+    : progress < 0.12
+      ? 1 - (progress - 0.08) / 0.04
+      : 0;
 
-  // Vertical shift between rows: moves content up to show row 2
-  const verticalShift = progress < 0.45 ? 0
-    : progress < 0.55 ? ((progress - 0.45) / 0.10) * -420
-    : -420;
+  // --- Row 1: right → left ---
+  // Cards start fully offscreen right (2500px), sweep through, exit offscreen left (-2500px)
+  const row1Progress = progress < 0.12 ? 0 : progress < 0.48 ? (progress - 0.12) / 0.36 : 1;
+  const row1X = 2500 - row1Progress * 5000; // 2500 → -2500
 
-  // Row 2 translateX: starts at -1200px (off-screen left), ends at 600px (off-screen right)
-  const row2Progress = progress < 0.55 ? 0 : progress < 0.95 ? (progress - 0.55) / 0.40 : 1;
-  const row2X = -1200 + row2Progress * 1800;
+  // Row 1 opacity: fade in quickly at start, fade out at end
+  const row1Opacity = progress < 0.12 ? 0
+    : progress < 0.16 ? (progress - 0.12) / 0.04
+    : progress < 0.44 ? 1
+    : progress < 0.48 ? 1 - (progress - 0.44) / 0.04
+    : 0;
 
-  // Title opacity
-  const titleOpacity = progress < 0.08 ? 1 : progress < 0.15 ? 1 - (progress - 0.08) / 0.07 : 0;
+  // --- Row 2: left → right ---
+  const row2Progress = progress < 0.52 ? 0 : progress < 0.88 ? (progress - 0.52) / 0.36 : 1;
+  const row2X = -2500 + row2Progress * 5000; // -2500 → 2500
+
+  // Row 2 opacity: fade in quickly, fade out at end
+  const row2Opacity = progress < 0.52 ? 0
+    : progress < 0.56 ? (progress - 0.52) / 0.04
+    : progress < 0.84 ? 1
+    : progress < 0.88 ? 1 - (progress - 0.84) / 0.04
+    : 0;
+
+  // Dynamic card rotation: each card gets a base rotation + a scroll-driven twist
+  const getCardRotation = (index, rowProgress, baseRotations) => {
+    const base = baseRotations[index % baseRotations.length];
+    // Add a sweep rotation that changes as cards move through viewport
+    const sweep = Math.sin(rowProgress * Math.PI + index * 0.5) * 4;
+    return base + sweep;
+  };
 
   return (
     <div
@@ -189,6 +212,7 @@ function TeamSection() {
         background: '#f5f5f5',
       }}
     >
+      {/* Sticky viewport */}
       <div
         style={{
           position: 'sticky',
@@ -196,20 +220,18 @@ function TeamSection() {
           height: '100vh',
           width: '100%',
           overflow: 'hidden',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
         }}
       >
-        {/* Title */}
+        {/* Title — centered in viewport */}
         <div style={{
           position: 'absolute',
-          top: 60,
-          left: 0,
-          right: 0,
-          padding: '0 48px',
+          top: 0, left: 0, right: 0, bottom: 0,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
           opacity: titleOpacity,
           zIndex: 5,
+          pointerEvents: 'none',
         }}>
           <h2 style={{
             fontSize: 'clamp(40px, 7vw, 100px)',
@@ -219,26 +241,28 @@ function TeamSection() {
             letterSpacing: '-0.05em',
             color: '#000',
             margin: 0,
+            textAlign: 'center',
           }}>
             Meet the <br />
             <span style={{ color: '#ff00ff' }}>CodeBase Team</span>
           </h2>
         </div>
 
-        {/* Cards container — shifts up to reveal row 2 */}
+        {/* Row 1: 2k23 batch — enters from right, exits left */}
         <div style={{
-          transform: `translateY(${verticalShift}px)`,
-          willChange: 'transform',
-          transition: 'transform 0.05s linear',
+          position: 'absolute',
+          top: 0, left: 0, right: 0, bottom: 0,
+          display: 'flex',
+          alignItems: 'center',
+          opacity: row1Opacity,
+          pointerEvents: 'none',
         }}>
-          {/* Row 1: 2k23 batch — right to left */}
           <div style={{
             display: 'flex',
             gap: 32,
-            padding: '20px 40px',
+            padding: '0 40px',
             transform: `translateX(${row1X}px)`,
             willChange: 'transform',
-            transition: 'transform 0.05s linear',
           }}>
             {row1Members.map((member, i) => (
               <ExhibitCard
@@ -247,20 +271,27 @@ function TeamSection() {
                 description={member.role}
                 color={member.color}
                 image={member.img}
-                rotation={cardRotations[i % cardRotations.length]}
+                rotation={getCardRotation(i, row1Progress, cardRotations)}
               />
             ))}
           </div>
+        </div>
 
-          {/* Row 2: 2k24 batch — left to right */}
+        {/* Row 2: 2k24 batch — enters from left, exits right */}
+        <div style={{
+          position: 'absolute',
+          top: 0, left: 0, right: 0, bottom: 0,
+          display: 'flex',
+          alignItems: 'center',
+          opacity: row2Opacity,
+          pointerEvents: 'none',
+        }}>
           <div style={{
             display: 'flex',
             gap: 32,
-            padding: '20px 40px',
-            marginTop: 32,
+            padding: '0 40px',
             transform: `translateX(${row2X}px)`,
             willChange: 'transform',
-            transition: 'transform 0.05s linear',
           }}>
             {row2Members.map((member, i) => (
               <ExhibitCard
@@ -269,7 +300,7 @@ function TeamSection() {
                 description={member.role}
                 color={member.color}
                 image={member.img}
-                rotation={cardRotations[(i + 3) % cardRotations.length]}
+                rotation={getCardRotation(i, row2Progress, cardRotations.slice().reverse())}
               />
             ))}
           </div>
