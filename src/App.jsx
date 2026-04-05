@@ -178,9 +178,9 @@ export default function App() {
 
   // 3. New Transforms for the MoMoney transition effect
   const textOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
-  const svgY = useTransform(scrollYProgress, [0, 0.15, 0.75], ["0vh", "0vh", "62vh"]);
-const svgScale = useTransform(scrollYProgress, [0, 0.15, 0.75], [1, 1, 6]);
-const svgOpacity = useTransform(scrollYProgress, [0.8, 1], [1, 0]);
+  const textY = useTransform(scrollYProgress, [0, 0.3], [0, -200]);
+  const svgY = useTransform(scrollYProgress, [0, 0.6], [0, 300]); 
+  const svgScale = useTransform(scrollYProgress, [0, 0.6], [1, 25]);
 
   return (
     <div className="bg-black text-white font-sans selection:bg-[#ccff00] selection:text-black min-h-screen overflow-x-hidden">
@@ -219,35 +219,39 @@ const svgOpacity = useTransform(scrollYProgress, [0.8, 1], [1, 0]);
 
             {/* --- THE TEXT & IMAGE SANDWICH --- */}
             {/* mb-12 explicitly pushes the paragraph down away from the giant text */}
+            {/* --- THE TEXT & IMAGE SANDWICH --- */}
             <div className="relative flex flex-col items-center justify-center w-full mb-12 md:mb-20">
 
-              {/* 1. TOP TEXT: IIIT Kota (Z-Index 0 - BEHIND THE IMAGE) */}
+              {/* 1. TOP TEXT: IIIT Kota */}
               <motion.div
-                style={{ opacity: textOpacity }}
+                style={{ opacity: textOpacity, y: textY }}
                 className="relative z-0 pointer-events-none"
               >
-                {/* Changed leading-[0.85] to leading-none to prevent bounding box collapse */}
                 <h1 className="text-[14vw] md:text-[10vw] font-black leading-none tracking-tighter uppercase drop-shadow-xl m-0">
                   IIIT Kota
                 </h1>
               </motion.div>
 
-              {/* 2. THE IMAGE (Z-Index 10 - IN THE MIDDLE) */}
-              <motion.div
-                style={{
-                  y: svgY,
-                  scale: svgScale,
-                  opacity: svgOpacity,
-                }}
-                className="absolute top-[60%] left-[45%] -translate-x-1/2 -translate-y-1/2 w-40 h-40 md:w-56 md:h-56 z-10 -rotate-30"
-              >
-                {/* I increased the w/h slightly to match the scale of your screenshot */}
-                <img src="./hackthechain.svg" alt="HackTheChain Logo" className="w-full h-full object-contain" />
-              </motion.div>
+              {/* 2. THE IMAGE (Z-Index 10) */}
+              {/* THE FIX: This outer div handles the absolute centering via Tailwind */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 md:w-48 md:h-48 z-10 flex items-center justify-center">
+                
+                {/* The inner motion div only handles the scroll animation */}
+                <motion.div
+                  style={{
+                    y: svgY,
+                    scale: svgScale,
+                  }}
+                  className="w-full h-full"
+                >
+                  <img src="./hackthechain.svg" alt="HackTheChain Logo" className="w-full h-full object-contain" />
+                </motion.div>
+                
+              </div>
 
-              {/* 3. BOTTOM TEXT: CodeBase (Z-Index 20 - IN FRONT OF THE IMAGE) */}
+              {/* 3. BOTTOM TEXT: CodeBase */}
               <motion.div
-                style={{ opacity: textOpacity }}
+                style={{ opacity: textOpacity, y: textY }}
                 className="relative z-20 pointer-events-none mt-2 md:mt-4"
               >
                 <h1 className="text-[15vw] md:text-[11vw] font-black leading-none tracking-tighter uppercase drop-shadow-xl m-0">
@@ -269,7 +273,7 @@ const svgOpacity = useTransform(scrollYProgress, [0.8, 1], [1, 0]);
             {/* --- SUBTITLE & BUTTON (NORMAL FLOW) --- */}
             {/* Removed from the sandwich div so it obeys normal CSS flow rules */}
             <motion.div 
-              style={{ opacity: textOpacity }} 
+              style={{ opacity: textOpacity, y: textY }} 
               className="relative z-30 flex flex-col items-center gap-8 w-full max-w-3xl"
             >
               <p className="text-sm md:text-xl text-white/80 font-black uppercase tracking-widest leading-relaxed text-center">
@@ -297,8 +301,6 @@ const svgOpacity = useTransform(scrollYProgress, [0.8, 1], [1, 0]);
 
         </section>
       </div>
-
-      <div className="relative h-[60vh] bg-black z-30" />
 
       {/* --- HORIZONTAL SCROLL SECTION (TEAM) --- */}
       {/* Added z-40 and relative to ensure it scrolls cleanly OVER the giant scaled SVG */}
