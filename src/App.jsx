@@ -28,12 +28,7 @@ const Navbar = () => (
     borderBottom: '1px solid rgba(255,255,255,0.1)',
   }}>
     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-      <div style={{
-        width: 32, height: 32, background: '#ccff00', borderRadius: '50%',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-      }}>
-        <span style={{ color: '#000', fontWeight: 900, fontSize: 20 }}>C</span>
-      </div>
+      <img src="./codebase.svg" alt="CodeBase Logo" style={{ width: 32, height: 32 }} />
       <span style={{ fontWeight: 900, fontSize: 20, letterSpacing: '-0.05em', color: '#fff' }}>CodeBase</span>
     </div>
     <div className="hidden md:flex" style={{ gap: 32, fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.7)' }}>
@@ -74,7 +69,7 @@ const FloatingIcon = ({ children, delay = 0, style = {} }) => (
   </motion.div>
 );
 
-const ExhibitCard = ({ title, description, color, image, rotation = 0 }) => {
+const ExhibitCard = ({ title, description, color, image, rotation = 0, github = '#', linkedin = '#' }) => {
   return (
     <motion.div
       whileHover={{ scale: 1.05, zIndex: 10 }}
@@ -97,10 +92,13 @@ const ExhibitCard = ({ title, description, color, image, rotation = 0 }) => {
         </div>
         <h3 className="text-2xl font-black text-white mb-1 uppercase leading-none tracking-tighter drop-shadow-md">{title}</h3>
         <p className="text-white/90 text-xs leading-tight font-bold uppercase drop-shadow-sm">{description}</p>
-        <div className="flex gap-3 mt-4 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-          <Github size={18} className="text-white hover:text-[#ccff00] cursor-pointer" />
-          <Linkedin size={18} className="text-white hover:text-[#00ffff] cursor-pointer" />
-          <Mail size={18} className="text-white hover:text-[#ff00ff] cursor-pointer" />
+        <div className="flex gap-4 mt-4 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+          <a href={github} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
+            <Github size={20} className="text-white hover:text-[#ccff00] transition-colors cursor-pointer" />
+          </a>
+          <a href={linkedin} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
+            <Linkedin size={20} className="text-white hover:text-[#00ffff] transition-colors cursor-pointer" />
+          </a>
         </div>
       </div>
     </motion.div>
@@ -109,24 +107,24 @@ const ExhibitCard = ({ title, description, color, image, rotation = 0 }) => {
 
 // --- Team data with real images ---
 const row1Members = [
-  { name: "Sanidhya Madeshia", role: "Coordinator", color: "bg-[#ccff00]", img: "./2k23/sanidhya_madeshiya.jpeg" },
-  { name: "Yash Agarwal", role: "Co-Coordinator", color: "bg-[#ff00ff]", img: "./2k23/yash_agrawal.jpeg" },
-  { name: "Abhishek Raj", role: "Codebase Member", color: "bg-white", img: "./2k23/abhishek_raj.jpeg" },
-  { name: "Dipesh Mundotiya", role: "Codebase Member", color: "bg-[#00ffff]", img: "./2k23/dipesh_mudotiya.jpeg" },
-  { name: "Parth Rudrawar", role: "Codebase Member", color: "bg-[#ccff00]", img: "./2k23/parth_rudrawar.jpeg" },
-  { name: "Ayush Singh", role: "Codebase Member", color: "bg-[#ff00ff]", img: "./2k23/ayush_singh.jpeg" },
-  { name: "Nishika", role: "Codebase Member", color: "bg-white", img: "./2k23/nishika.jpeg" },
+  { name: "Sanidhya Madeshia", role: "Coordinator", color: "bg-[#ccff00]", img: "./2k23/sanidhya_madeshiya.jpeg", github: "#", linkedin: "#" },
+  { name: "Yash Agarwal", role: "Co-Coordinator", color: "bg-[#ff00ff]", img: "./2k23/yash_agrawal.jpeg", github: "#", linkedin: "#" },
+  { name: "Abhishek Raj", role: "Codebase Member", color: "bg-white", img: "./2k23/abhishek_raj.jpeg", github: "#", linkedin: "#" },
+  { name: "Dipesh Mundotiya", role: "Codebase Member", color: "bg-[#00ffff]", img: "./2k23/dipesh_mudotiya.jpeg", github: "#", linkedin: "#" },
+  { name: "Parth Rudrawar", role: "Codebase Member", color: "bg-[#ccff00]", img: "./2k23/parth_rudrawar.jpeg", github: "#", linkedin: "#" },
+  { name: "Ayush Singh", role: "Codebase Member", color: "bg-[#ff00ff]", img: "./2k23/ayush_singh.jpeg", github: "#", linkedin: "#" },
+  { name: "Nishika", role: "Codebase Member", color: "bg-white", img: "./2k23/nishika.jpeg", github: "#", linkedin: "#" },
 ];
 
 const row2Members = [
-  { name: "Raghav Gupta", role: "Coordinator", color: "bg-[#ccff00]", img: "./2k24/raghav_gupta.jpeg" },
-  { name: "Ayush Mittal", role: "Co-Coordinator", color: "bg-[#ff00ff]", img: "./2k24/ayush_mittal.jpeg" },
-  { name: "Divyam Saraf", role: "Codebase Member", color: "bg-white", img: "./2k24/divyam_saraf.jpeg" },
-  { name: "Gaurav Patil", role: "Codebase Member", color: "bg-[#00ffff]", img: "./2k24/gaurav_patil.jpeg" },
-  { name: "Megh", role: "Codebase Member", color: "bg-[#ccff00]", img: "./2k24/megh.jpeg" },
-  { name: "Satyam Rajawat", role: "Codebase Member", color: "bg-[#ff00ff]", img: "./2k24/satyam_rajawat.jpeg" },
-  { name: "Shyam Mohan", role: "Codebase Member", color: "bg-white", img: "./2k24/shyam_mohan.jpeg" },
-  { name: "Ujjawal Sharma", role: "Codebase Member", color: "bg-[#00ffff]", img: "./2k24/ujjawal_sharma.jpeg" },
+  { name: "Raghav Gupta", role: "Coordinator", color: "bg-[#ccff00]", img: "./2k24/raghav_gupta.jpeg", github: "#", linkedin: "#" },
+  { name: "Ayush Mittal", role: "Co-Coordinator", color: "bg-[#ff00ff]", img: "./2k24/ayush_mittal.jpeg", github: "#", linkedin: "#" },
+  { name: "Divyam Saraf", role: "Codebase Member", color: "bg-white", img: "./2k24/divyam_saraf.jpeg", github: "#", linkedin: "#" },
+  { name: "Gaurav Patil", role: "Codebase Member", color: "bg-[#00ffff]", img: "./2k24/gaurav_patil.jpeg", github: "#", linkedin: "#" },
+  { name: "Megh", role: "Codebase Member", color: "bg-[#ccff00]", img: "./2k24/megh.jpeg", github: "#", linkedin: "#" },
+  { name: "Satyam Rajawat", role: "Codebase Member", color: "bg-[#ff00ff]", img: "./2k24/satyam_rajawat.jpeg", github: "#", linkedin: "#" },
+  { name: "Shyam Mohan", role: "Codebase Member", color: "bg-white", img: "./2k24/shyam_mohan.jpeg", github: "#", linkedin: "#" },
+  { name: "Ujjawal Sharma", role: "Codebase Member", color: "bg-[#00ffff]", img: "./2k24/ujjawal_sharma.jpeg", github: "#", linkedin: "#" },
 ];
 
 // Seeded random rotations for cards
@@ -158,49 +156,58 @@ function TeamSection() {
   }, []);
 
   // ---- Animation Phases ----
-  // 0.00 - 0.08: Title centered, no cards visible
-  // 0.08 - 0.12: Title fades out
-  // 0.12 - 0.48: Row 1 enters from RIGHT, slides LEFT across viewport, exits LEFT
-  // 0.48 - 0.52: Transition pause
-  // 0.52 - 0.88: Row 2 enters from LEFT, slides RIGHT across viewport, exits RIGHT
-  // 0.88 - 1.00: Section unpins
+  // 0.00 - 0.02: Title fully visible, cards not yet visible
+  // 0.02 - 0.42: Row 1 enters from RIGHT, sweeps LEFT
+  //              Title stays visible BEHIND cards (lower z-index)
+  //              Title fades only at ~0.15-0.22 when cards are physically covering it
+  // 0.42 - 0.48: Brief pause between rows
+  // 0.48 - 0.85: Row 2 enters from LEFT, sweeps RIGHT
+  // 0.85 - 0.93: Ending message fades in
+  // 0.93 - 1.00: Section unpins
 
-  // --- Title ---
-  const titleOpacity = progress < 0.08
+  // --- Title: stays visible behind cards, fades when cards cover it ---
+  // Cards reach center of viewport at approx row1Progress=0.5 → progress≈0.22
+  const titleOpacity = progress < 0.15
     ? 1
-    : progress < 0.12
-      ? 1 - (progress - 0.08) / 0.04
+    : progress < 0.22
+      ? 1 - (progress - 0.15) / 0.07
       : 0;
 
-  // --- Row 1: right → left ---
-  // Cards start fully offscreen right (2500px), sweep through, exit offscreen left (-2500px)
-  const row1Progress = progress < 0.12 ? 0 : progress < 0.48 ? (progress - 0.12) / 0.36 : 1;
+  // --- Row 1: right → left (starts early at 0.02) ---
+  const row1Progress = progress < 0.02 ? 0 : progress < 0.42 ? (progress - 0.02) / 0.40 : 1;
   const row1X = 2500 - row1Progress * 5000; // 2500 → -2500
 
-  // Row 1 opacity: fade in quickly at start, fade out at end
-  const row1Opacity = progress < 0.12 ? 0
-    : progress < 0.16 ? (progress - 0.12) / 0.04
-    : progress < 0.44 ? 1
-    : progress < 0.48 ? 1 - (progress - 0.44) / 0.04
+  // Row 1 opacity: fades in as it enters, fades out as it exits
+  const row1Opacity = progress < 0.02 ? 0
+    : progress < 0.05 ? (progress - 0.02) / 0.03
+    : progress < 0.38 ? 1
+    : progress < 0.42 ? 1 - (progress - 0.38) / 0.04
     : 0;
 
   // --- Row 2: left → right ---
-  const row2Progress = progress < 0.52 ? 0 : progress < 0.88 ? (progress - 0.52) / 0.36 : 1;
+  const row2Progress = progress < 0.48 ? 0 : progress < 0.85 ? (progress - 0.48) / 0.37 : 1;
   const row2X = -2500 + row2Progress * 5000; // -2500 → 2500
 
-  // Row 2 opacity: fade in quickly, fade out at end
-  const row2Opacity = progress < 0.52 ? 0
-    : progress < 0.56 ? (progress - 0.52) / 0.04
-    : progress < 0.84 ? 1
-    : progress < 0.88 ? 1 - (progress - 0.84) / 0.04
+  // Row 2 opacity
+  const row2Opacity = progress < 0.48 ? 0
+    : progress < 0.51 ? (progress - 0.48) / 0.03
+    : progress < 0.81 ? 1
+    : progress < 0.85 ? 1 - (progress - 0.81) / 0.04
     : 0;
 
-  // Dynamic card rotation: each card gets a base rotation + a scroll-driven twist
+  // --- Ending message: fades in after both rows complete ---
+  const endingOpacity = progress < 0.85 ? 0
+    : progress < 0.90 ? (progress - 0.85) / 0.05
+    : 1;
+
+  // Dynamic card rotation: base + scroll-driven sweep + per-card offset
   const getCardRotation = (index, rowProgress, baseRotations) => {
     const base = baseRotations[index % baseRotations.length];
-    // Add a sweep rotation that changes as cards move through viewport
-    const sweep = Math.sin(rowProgress * Math.PI + index * 0.5) * 4;
-    return base + sweep;
+    // Stronger sweep: each card oscillates as it passes through the viewport
+    const sweep = Math.sin(rowProgress * Math.PI * 2 + index * 0.8) * 6;
+    // Additional subtle randomness based on card position
+    const wobble = Math.cos(rowProgress * Math.PI * 3 + index * 1.2) * 2;
+    return base + sweep + wobble;
   };
 
   return (
@@ -230,7 +237,7 @@ function TeamSection() {
           alignItems: 'center',
           justifyContent: 'center',
           opacity: titleOpacity,
-          zIndex: 5,
+          zIndex: 2,
           pointerEvents: 'none',
         }}>
           <h2 style={{
@@ -255,7 +262,7 @@ function TeamSection() {
           display: 'flex',
           alignItems: 'center',
           opacity: row1Opacity,
-          pointerEvents: 'none',
+          zIndex: 5,
         }}>
           <div style={{
             display: 'flex',
@@ -272,6 +279,8 @@ function TeamSection() {
                 color={member.color}
                 image={member.img}
                 rotation={getCardRotation(i, row1Progress, cardRotations)}
+                github={member.github}
+                linkedin={member.linkedin}
               />
             ))}
           </div>
@@ -284,7 +293,7 @@ function TeamSection() {
           display: 'flex',
           alignItems: 'center',
           opacity: row2Opacity,
-          pointerEvents: 'none',
+          zIndex: 5,
         }}>
           <div style={{
             display: 'flex',
@@ -301,9 +310,52 @@ function TeamSection() {
                 color={member.color}
                 image={member.img}
                 rotation={getCardRotation(i, row2Progress, cardRotations.slice().reverse())}
+                github={member.github}
+                linkedin={member.linkedin}
               />
             ))}
           </div>
+        </div>
+
+        {/* Ending message — appears after both rows complete */}
+        <div style={{
+          position: 'absolute',
+          top: 0, left: 0, right: 0, bottom: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          opacity: endingOpacity,
+          zIndex: 10,
+          pointerEvents: 'none',
+          padding: '0 24px',
+        }}>
+          <h2 style={{
+            fontSize: 'clamp(32px, 5vw, 72px)',
+            fontWeight: 900,
+            lineHeight: 1.05,
+            textTransform: 'uppercase',
+            letterSpacing: '-0.04em',
+            color: '#000',
+            margin: 0,
+            textAlign: 'center',
+            maxWidth: 900,
+          }}>
+            You've met the minds.<br />
+            <span style={{ color: '#ff00ff' }}>Now join the action.</span>
+          </h2>
+          <p style={{
+            fontSize: 'clamp(14px, 1.5vw, 20px)',
+            color: '#444',
+            textAlign: 'center',
+            maxWidth: 600,
+            marginTop: 24,
+            fontWeight: 500,
+            lineHeight: 1.6,
+          }}>
+            From late-night hackathons to skill-building workshops,
+            we're always building something new.
+          </p>
         </div>
 
         {/* Background grid decoration */}
@@ -425,64 +477,7 @@ function HeroSection() {
           overflow: 'hidden',
         }}
       >
-        {/* ---- Background Decorations ---- */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '25%',
-            left: 40,
-            pointerEvents: 'none',
-            opacity: bgOpacityVal,
-            transform: `translateY(${-progress * 200}px)`,
-            transition: 'opacity 0.1s',
-          }}
-        >
-          <Zap size={300} style={{ color: '#ccff00' }} />
-        </div>
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '25%',
-            right: 40,
-            pointerEvents: 'none',
-            opacity: bgOpacityVal,
-            transform: `translateY(${progress * 200}px) rotate(-45deg)`,
-            transition: 'opacity 0.1s',
-          }}
-        >
-          <Lightbulb size={400} style={{ color: '#ff00ff' }} />
-        </div>
 
-        {/* ---- Floating Icons ---- */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            pointerEvents: 'none',
-            opacity: iconsOpacityVal,
-          }}
-        >
-          <FloatingIcon style={{ top: '33%', left: '15%' }}>
-            <div style={{
-              padding: 16, background: '#ff00ff', borderRadius: 16,
-              transform: 'rotate(12deg)',
-              boxShadow: '0 0 30px rgba(255,0,255,0.5)',
-              border: '4px solid #000',
-            }}>
-              <Zap size={48} style={{ color: '#000' }} />
-            </div>
-          </FloatingIcon>
-          <FloatingIcon delay={1} style={{ top: '25%', right: '20%' }}>
-            <div style={{
-              padding: 16, background: '#ccff00', borderRadius: '50%',
-              transform: 'rotate(-12deg)',
-              boxShadow: '0 0 30px rgba(204,255,0,0.5)',
-              border: '4px solid #000',
-            }}>
-              <Smile size={48} style={{ color: '#000' }} />
-            </div>
-          </FloatingIcon>
-        </div>
 
         {/* ===================================================
             LAYER 1: "IIIT KOTA" — z-index: 5 (BEHIND image)
@@ -740,19 +735,7 @@ export default function App() {
             Building the <br />
             Future Together
           </h2>
-          <motion.div
-            whileHover={{ scale: 1.1, rotate: 5 }}
-            className="relative cursor-pointer mb-12"
-          >
-            <div className="absolute -inset-10 bg-white/30 blur-3xl rounded-full animate-pulse" />
-            <Zap size={200} strokeWidth={1} className="relative z-10 text-black" />
-            <FloatingIcon style={{ top: -40, right: -40 }}>
-              <div className="bg-black text-[#ccff00] p-4 rounded-full font-black text-2xl border-4 border-white shadow-xl">FOSS</div>
-            </FloatingIcon>
-            <FloatingIcon delay={0.5} style={{ bottom: -20, left: -40 }}>
-              <div className="bg-white text-black p-4 rounded-full font-black text-2xl border-4 border-black shadow-xl">CODE</div>
-            </FloatingIcon>
-          </motion.div>
+
           <button className="bg-black text-white px-12 py-6 rounded-full font-black text-xl uppercase hover:scale-105 transition-transform border-4 border-white shadow-[8px_8px_0px_0px_rgba(255,255,255,1)]">
             Join the Community
           </button>
