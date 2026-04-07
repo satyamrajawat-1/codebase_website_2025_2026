@@ -32,15 +32,15 @@ const Navbar = () => (
       <span style={{ fontWeight: 900, fontSize: 20, letterSpacing: '-0.05em', color: '#fff' }}>CodeBase</span>
     </div>
     <div className="hidden md:flex" style={{ gap: 32, fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.7)' }}>
-      <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Members</a>
-      <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Projects</a>
-      <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Events</a>
+      <a href="#home" style={{ color: 'inherit', textDecoration: 'none' }}>Home</a>
+      <a href="#members" style={{ color: 'inherit', textDecoration: 'none' }}>Members</a>
+      <a href="#events" style={{ color: 'inherit', textDecoration: 'none' }}>Events</a>
     </div>
     <motion.button
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       style={{
-        background: '#ff00ff', color: '#fff', padding: '8px 24px', borderRadius: 999,
+        background: '#1099B7', color: '#fff', padding: '8px 24px', borderRadius: 999,
         fontWeight: 900, fontSize: 13, textTransform: 'uppercase',
         display: 'flex', alignItems: 'center', gap: 8, border: '2px solid #000',
         boxShadow: '4px 4px 0px 0px rgba(0,0,0,1)', cursor: 'pointer',
@@ -90,22 +90,24 @@ const ExhibitCard = ({ title, description, color, image, rotation = 0, github = 
 // --- Team data with real images ---
 const row1Members = [
   { name: "Sanidhya Madeshia", role: "Coordinator", color: "bg-[#ccff00]", img: "./2k23/sanidhya_madeshiya.jpeg", github: "#", linkedin: "#" },
-  { name: "Yash Agarwal", role: "Co-Coordinator", color: "bg-[#ff00ff]", img: "./2k23/yash_agrawal.jpeg", github: "#", linkedin: "#" },
-  { name: "Abhishek Raj", role: "Core Member", color: "bg-white", img: "./2k23/abhishek_raj.jpeg", github: "#", linkedin: "#" },
-  { name: "Dipesh Mundotiya", role: "Core Member", color: "bg-[#00ffff]", img: "./2k23/dipesh_mudotiya.jpeg", github: "#", linkedin: "#" },
-  { name: "Parth Rudrawar", role: "Core Member", color: "bg-[#ccff00]", img: "./2k23/parth_rudrawar.jpeg", github: "#", linkedin: "#" },
+  { name: "Yash Agarwal", role: "Co-Coordinator", color: "bg-[#ff00ff]", img: "./2k23/yash_agrawal.jpeg", github: "https://github.com/yashag710", linkedin: "https://www.linkedin.com/in/yash-agarwalcr710/" },
+  { name: "Harsh Raj", role: "Core Member", color: "bg-white", img: "./2k23/abhishek_raj.jpeg", github: "https://github.com/HarshRaj29004", linkedin: "https://www.linkedin.com/in/harsh-raj-58921728b/" },
+  { name: "Dipesh Mundotiya", role: "Core Member", color: "bg-[#00ffff]", img: "./2k23/dipesh_mudotiya.jpeg", github: "https://github.com/dipeshmundotiya03", linkedin: "https://www.linkedin.com/in/deepesh-mundotiya/" },
+  { name: "Parth Rudrawar", role: "Core Member", color: "bg-[#ccff00]", img: "./2k23/parth_rudrawar.jpeg", github: "https://github.com/parthrudrawar", linkedin: "www.linkedin.com/in/rudrawar-parth-737018283" },
   { name: "Ayush Singh", role: "Core Member", color: "bg-[#ff00ff]", img: "./2k23/ayush_singh.jpeg", github: "#", linkedin: "#" },
-  { name: "Nishika", role: "Core Member", color: "bg-white", img: "./2k23/nishika.jpeg", github: "#", linkedin: "#" },
+  { name: "Nishika", role: "Core Member", color: "bg-white", img: "./2k23/nishika.jpeg", github: "https://github.com/Royxnish", linkedin: "https://www.linkedin.com/in/nishika-roy-20865528b/" },
 ];
 
 const row2Members = [
-  { name: "Raghav Gupta", role: "App Development Lead", color: "bg-[#ccff00]", img: "./2k24/raghav_gupta.jpeg", github: "#", linkedin: "#" },
-  { name: "Ayush Mittal", role: "Web 3 Lead", color: "bg-[#ff00ff]", img: "./2k24/ayush_mittal.jpeg", github: "#", linkedin: "#" },
-  { name: "Divyam Saraf", role: "Web Development Lead", color: "bg-white", img: "./2k24/divyam_saraf.jpeg", github: "#", linkedin: "#" },
-  { name: "Gaurav Patil", role: "Cloud Lead", color: "bg-[#00ffff]", img: "./2k24/gaurav_patil.jpeg", github: "#", linkedin: "#" },
-  { name: "Megh", role: "Social Media Lead", color: "bg-[#ccff00]", img: "./2k24/megh.jpeg", github: "#", linkedin: "#" },
-  { name: "Satyam Rajawat", role: "Web Development Lead", color: "bg-[#ff00ff]", img: "./2k24/satyam_rajawat.jpeg", github: "#", linkedin: "#" },
-  { name: "Shyam Mohan", role: "Web Development Lead", color: "bg-white", img: "./2k24/shyam_mohan.jpeg", github: "#", linkedin: "#" },
+  { name: "Dhananjay Mangal", role: "Social Media Lead", color: "bg-[#00ffff]", img: "./2k24/dhananjay_mangal.jpeg", github: "#", linkedin: "#" },
+  { name: "Akarsh Bibhaw", role: "UI/Ux Lead", color: "bg-[#00ffff]", img: "./2k24/akarsh_bibhaw.jpeg", github: "#", linkedin: "#" },
+  { name: "Raghav Gupta", role: "App Development Lead", color: "bg-[#ccff00]", img: "./2k24/raghav_gupta.jpeg", github: "https://github.com/raghavgupta000001", linkedin: "https://www.linkedin.com/in/raghav-gupta-5192a6306/" },
+  { name: "Ayush Mittal", role: "Web 3 Lead", color: "bg-[#ff00ff]", img: "./2k24/ayush_mittal.jpeg", github: "https://github.com/AayushM0", linkedin: "https://www.linkedin.com/in/aayush-mittal-5997ba31b" },
+  { name: "Divyam Saraf", role: "Web Development Lead", color: "bg-white", img: "./2k24/divyam_saraf.jpeg", github: "https://github.com/Divyam0207914", linkedin: "https://www.linkedin.com/in/divyam-saraf-9a2057318/" },
+  { name: "Gaurav Patil", role: "Cloud Lead", color: "bg-[#00ffff]", img: "./2k24/gaurav_patil.jpeg", github: "https://github.com/devGPP23", linkedin: "https://www.linkedin.com/in/gaurav-patil-4a48b528a/" },
+  { name: "Megh", role: "Social Media Lead", color: "bg-[#ccff00]", img: "./2k24/megh.jpeg", github: "https://github.com/megh8055", linkedin: "https://www.linkedin.com/in/megh-kakadiya-04ab83311/" },
+  { name: "Satyam Rajawat", role: "Web Development Lead", color: "bg-[#ff00ff]", img: "./2k24/satyam_rajawat.jpeg", github: "https://github.com/satyamrajawat-1", linkedin: "https://www.linkedin.com/in/satyam-rajawat-502466323/" },
+  { name: "Shyam Mohan", role: "Web Development Lead", color: "bg-white", img: "./2k24/shyam_mohan.jpeg", github: "https://github.com/ShyamMohan45", linkedin: "https://www.linkedin.com/in/shyam-mohan-faujdaar-657997323/" },
   { name: "Ujjawal Sharma", role: "AI/ML Lead", color: "bg-[#00ffff]", img: "./2k24/ujjawal_sharma.jpeg", github: "#", linkedin: "#" },
 ];
 
@@ -243,6 +245,7 @@ function ProjectsSection() {
 
   return (
     <div
+      id="events"
       ref={containerRef}
       style={{ position: 'relative', height: '600vh', background: '#f0edd4' }}
     >
@@ -435,6 +438,7 @@ function TeamSection() {
 
   return (
     <div
+      id="members"
       ref={containerRef}
       style={{
         position: 'relative',
@@ -474,7 +478,8 @@ function TeamSection() {
             textAlign: 'center',
           }}>
             Meet the <br />
-            <span style={{ color: '#ff00ff' }}>CodeBase Team</span>
+            <span style={{ color: '#1099B7' }}>CodeBase    </span>
+            <span style={{ color: '#000' }}>Team</span>
           </h2>
         </div>
 
@@ -486,6 +491,7 @@ function TeamSection() {
           alignItems: 'center',
           opacity: row1Opacity,
           zIndex: 5,
+          pointerEvents: row1Opacity > 0 ? 'auto' : 'none',
         }}>
           <div style={{
             display: 'flex',
@@ -517,6 +523,7 @@ function TeamSection() {
           alignItems: 'center',
           opacity: row2Opacity,
           zIndex: 5,
+          pointerEvents: row2Opacity > 0 ? 'auto' : 'none',
         }}>
           <div style={{
             display: 'flex',
@@ -565,7 +572,7 @@ function TeamSection() {
             maxWidth: 900,
           }}>
             You've met the minds.<br />
-            <span style={{ color: '#ff00ff' }}>Now join the action.</span>
+            <span style={{ color: '#1099B7' }}>Now join the action.</span>
           </h2>
           <p style={{
             fontSize: 'clamp(14px, 1.5vw, 20px)',
@@ -682,6 +689,7 @@ function HeroSection() {
 
   return (
     <div
+      id="home"
       ref={containerRef}
       style={{
         position: 'relative',
@@ -735,7 +743,7 @@ function HeroSection() {
               transform: 'translateY(-80px)',
             }}
           >
-            IIIT Kota
+            IIIT kota
           </h1>
         </div>
 
@@ -807,7 +815,7 @@ function HeroSection() {
               transform: 'translateY(80px)',
             }}
           >
-            <span style={{ color: '#ccff00' }}>Code</span>
+            <span style={{ color: '#1099B7' }}>Code</span>
             <span style={{ color: '#fff' }}>Base</span>
           </h1>
         </div>
@@ -866,27 +874,6 @@ function HeroSection() {
             willChange: 'transform, opacity',
           }}
         >
-          <div style={{ transform: 'translateY(310px)' }}>
-            <button
-              style={{
-                background: '#fff',
-                color: '#000',
-                padding: '16px 40px',
-                borderRadius: 999,
-                fontWeight: 900,
-                fontSize: 14,
-                textTransform: 'uppercase',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 12,
-                border: '4px solid #000',
-                boxShadow: '6px 6px 0px 0px rgba(204,255,0,1)',
-                cursor: 'pointer',
-              }}
-            >
-              Explore <ArrowRight size={20} />
-            </button>
-          </div>
         </div>
 
         {/* Scroll Indicator */}
@@ -922,6 +909,7 @@ export default function App() {
       fontFamily: '"Inter", ui-sans-serif, system-ui, sans-serif',
       minHeight: '100vh',
     }}>
+      <style>{`html { scroll-behavior: smooth; }`}</style>
       <Navbar />
 
       <HeroSection />
@@ -933,7 +921,7 @@ export default function App() {
       <ProjectsSection />
 
       {/* Footer */}
-      <footer className="bg-black py-20 border-t border-white/10 overflow-hidden">
+      <footer id="about" className="bg-black py-20 border-t border-white/10 overflow-hidden">
         <div className="flex whitespace-nowrap mb-20">
           <motion.div
             animate={{ x: [0, -1000] }}
@@ -961,19 +949,18 @@ export default function App() {
             <div>
               <h4 className="font-black uppercase text-sm tracking-widest mb-6 text-[#ccff00]">Club</h4>
               <ul className="space-y-4 text-white/60 font-black uppercase tracking-tighter">
-                <li><a href="#" className="hover:text-[#ccff00]">Members</a></li>
-                <li><a href="#" className="hover:text-[#ccff00]">Projects</a></li>
-                <li><a href="#" className="hover:text-[#ccff00]">Events</a></li>
-                <li><a href="#" className="hover:text-[#ccff00]">About</a></li>
+                <li><a href="#members" className="hover:text-[#ccff00]">Members</a></li>
+                <li><a href="#events" className="hover:text-[#ccff00]">Projects</a></li>
+                <li><a href="#events" className="hover:text-[#ccff00]">Events</a></li>
+                <li><a href="#about" className="hover:text-[#ccff00]">About</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-black uppercase text-sm tracking-widest mb-6 text-[#ff00ff]">Connect</h4>
+              <h4 className="font-black uppercase text-sm tracking-widest mb-6 text-[#1099B7]">Connect</h4>
               <ul className="space-y-4 text-white/60 font-black uppercase tracking-tighter">
-                <li><a href="#" className="hover:text-[#ff00ff]">GitHub</a></li>
-                <li><a href="#" className="hover:text-[#ff00ff]">LinkedIn</a></li>
-                <li><a href="#" className="hover:text-[#ff00ff]">Instagram</a></li>
-                <li><a href="#" className="hover:text-[#ff00ff]">Discord</a></li>
+                <li><a href="https://github.com/ikcb" className="hover:text-[#1099B7]">GitHub</a></li>
+                <li><a href="https://www.linkedin.com/company/codebase-iiitkota/posts/?feedView=all" className="hover:text-[#1099B7]">LinkedIn</a></li>
+                <li><a href="https://www.instagram.com/iiitkota_codebase?igsh=MXNiMjc3dmJneXQybQ==" className="hover:text-[#1099B7]">Instagram</a></li>
               </ul>
             </div>
           </div>
