@@ -96,6 +96,7 @@ const row1Members = [
   { name: "Parth Rudrawar", role: "Core Member", color: "bg-[#ccff00]", img: "./2k23/parth_rudrawar.jpeg", github: "https://github.com/parthrudrawar", linkedin: "www.linkedin.com/in/rudrawar-parth-737018283" },
   { name: "Ayush Singh", role: "Core Member", color: "bg-[#ff00ff]", img: "./2k23/ayush_singh.jpeg", github: "#", linkedin: "#" },
   { name: "Nishika", role: "Core Member", color: "bg-white", img: "./2k23/nishika.jpeg", github: "https://github.com/Royxnish", linkedin: "https://www.linkedin.com/in/nishika-roy-20865528b/" },
+  { name: "Ashmit Singh", role: "Core Member", color: "bg-white", img: "./2k23/ashmit_singh.jpeg", github: "", linkedin: "https://www.linkedin.com/in/ashmit-singh-40180329b/" },
 ];
 
 const row2Members = [
