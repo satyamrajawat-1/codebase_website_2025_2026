@@ -950,7 +950,6 @@ export default function App() {
               <h4 className="font-black uppercase text-sm tracking-widest mb-6 text-[#ccff00]">Club</h4>
               <ul className="space-y-4 text-white/60 font-black uppercase tracking-tighter">
                 <li><a href="#members" className="hover:text-[#ccff00]">Members</a></li>
-                <li><a href="#events" className="hover:text-[#ccff00]">Projects</a></li>
                 <li><a href="#events" className="hover:text-[#ccff00]">Events</a></li>
                 <li><a href="#about" className="hover:text-[#ccff00]">About</a></li>
               </ul>
