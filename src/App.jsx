@@ -16,6 +16,7 @@ import {
   Linkedin,
   Mail,
 } from 'lucide-react';
+import { useLocomotiveScroll } from './hooks/useLocomotiveScroll';
 
 // --- Reusable Components ---
 
@@ -382,57 +383,62 @@ function TeamSection() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // ---- Animation Phases ----
-  // 0.00 - 0.02: Title fully visible, cards not yet visible
-  // 0.02 - 0.42: Row 1 enters from RIGHT, sweeps LEFT
-  //              Title stays visible BEHIND cards (lower z-index)
-  //              Title fades only at ~0.15-0.22 when cards are physically covering it
-  // 0.42 - 0.48: Brief pause between rows
-  // 0.48 - 0.85: Row 2 enters from LEFT, sweeps RIGHT
-  // 0.85 - 0.93: Ending message fades in
+  // ---- Animation Phases (container = 800vh) ----
+  // 0.00 - 0.03: Title fully visible
+  // 0.03 - 0.42: Row 1 sweeps RIGHT → LEFT
+  // 0.42 - 0.46: Short 4% pause (≈32vh) — screen is clean and empty
+  // 0.46 - 0.86: Row 2 sweeps LEFT → RIGHT
+  //              Row 2 starts at translateX -3500 so ALL 10 cards
+  //              (≈3300px total) are fully off-screen left from frame 1
+  // 0.86 - 0.93: Ending message fades in
   // 0.93 - 1.00: Section unpins
 
-  // --- Title: stays visible behind cards, fades when cards cover it ---
-  // Cards reach center of viewport at approx row1Progress=0.5 → progress≈0.22
-  const titleOpacity = progress < 0.15
+  // --- Title ---
+  const titleOpacity = progress < 0.12
     ? 1
-    : progress < 0.22
-      ? 1 - (progress - 0.15) / 0.07
+    : progress < 0.20
+      ? 1 - (progress - 0.12) / 0.08
       : 0;
 
-  // --- Row 1: right → left (starts early at 0.02) ---
-  const row1Progress = progress < 0.02 ? 0 : progress < 0.42 ? (progress - 0.02) / 0.40 : 1;
-  const row1X = 2500 - row1Progress * 5000; // 2500 → -2500
+  // --- Row 1: right → left (0.03 → 0.42) ---
+  const row1Progress = progress < 0.03 ? 0 : progress < 0.42 ? (progress - 0.03) / 0.39 : 1;
+  const row1X = 2600 - row1Progress * 5200; // +2600 → -2600
 
-  // Row 1 opacity: fades in as it enters, fades out as it exits
-  const row1Opacity = progress < 0.02 ? 0
-    : progress < 0.05 ? (progress - 0.02) / 0.03
+  const row1Opacity = progress < 0.03 ? 0
+    : progress < 0.07 ? (progress - 0.03) / 0.04  // fade in as first card peeks
       : progress < 0.38 ? 1
-        : progress < 0.42 ? 1 - (progress - 0.38) / 0.04
+        : progress < 0.42 ? 1 - (progress - 0.38) / 0.04  // crisp exit
           : 0;
 
-  // --- Row 2: left → right ---
-  const row2Progress = progress < 0.48 ? 0 : progress < 0.85 ? (progress - 0.48) / 0.37 : 1;
-  const row2X = -2500 + row2Progress * 5000; // -2500 → 2500
+  // --- Row 2: left → right (0.46 → 0.86) ---
+  // Starting translateX = -3500 ensures ALL 10 cards (≈3300px total width)
+  // are completely off-screen left at t=0, so the very first visible moment
+  // is the leftmost card peeking in from the left edge — no ghost fade.
+  const row2Progress = progress < 0.46 ? 0 : progress < 0.86 ? (progress - 0.46) / 0.40 : 1;
+  const row2X = -3500 + row2Progress * 6800; // -3500 → +3300
 
-  // Row 2 opacity
-  const row2Opacity = progress < 0.48 ? 0
-    : progress < 0.51 ? (progress - 0.48) / 0.03
-      : progress < 0.81 ? 1
-        : progress < 0.85 ? 1 - (progress - 0.81) / 0.04
-          : 0;
+  // No fade-in: opacity jumps straight to 1 when row2 phase starts.
+  // Cards are off-screen at that moment so nothing is visible yet;
+  // they slide in physically from the left — clean, no ghost effect.
+  const row2Opacity = progress < 0.46 ? 0
+    : progress < 0.82 ? 1
+      : progress < 0.86 ? 1 - (progress - 0.82) / 0.04  // crisp exit
+        : 0;
 
-  // --- Ending message: fades in after both rows complete ---
-  const endingOpacity = progress < 0.85 ? 0
-    : progress < 0.90 ? (progress - 0.85) / 0.05
+  // --- Ending message ---
+  // Heading sits BEHIND the cards (zIndex 3, cards are at 5).
+  // Opacity builds from 0.70 → 0.86 so it reaches full opacity BEFORE
+  // the last card has finished crossing — the card acts as a curtain:
+  // when it sweeps off the right edge it fully reveals the heading.
+  const endingOpacity = progress < 0.70 ? 0
+    : progress < 0.86 ? (progress - 0.70) / 0.16
       : 1;
 
   // Dynamic card rotation: base + scroll-driven sweep + per-card offset
   const getCardRotation = (index, rowProgress, baseRotations) => {
     const base = baseRotations[index % baseRotations.length];
-    // Stronger sweep: each card oscillates as it passes through the viewport
-    const sweep = Math.sin(rowProgress * Math.PI * 2 + index * 0.8) * 6;
-    // Additional subtle randomness based on card position
+    // Sweep oscillates as cards fly through the viewport
+    const sweep = Math.sin(rowProgress * Math.PI * 2 + index * 0.8) * 5;
     const wobble = Math.cos(rowProgress * Math.PI * 3 + index * 1.2) * 2;
     return base + sweep + wobble;
   };
@@ -443,7 +449,7 @@ function TeamSection() {
       ref={containerRef}
       style={{
         position: 'relative',
-        height: '500vh',
+        height: '800vh',   /* ← increased from 500vh: more scroll distance = slower, cinematic feel */
         background: '#f5f5f5',
       }}
     >
@@ -516,7 +522,7 @@ function TeamSection() {
           </div>
         </div>
 
-        {/* Row 2: 2k24 batch — enters from left, exits right */}
+        {/* Row 2: 2k24 batch — enters from RIGHT (same direction as Row 1) */}
         <div style={{
           position: 'absolute',
           top: 0, left: 0, right: 0, bottom: 0,
@@ -540,7 +546,7 @@ function TeamSection() {
                 description={member.role}
                 color={member.color}
                 image={member.img}
-                rotation={getCardRotation(i, row2Progress, cardRotations.slice().reverse())}
+                rotation={getCardRotation(i, row2Progress, cardRotations)}
                 github={member.github}
                 linkedin={member.linkedin}
               />
@@ -548,7 +554,10 @@ function TeamSection() {
           </div>
         </div>
 
-        {/* Ending message — appears after both rows complete */}
+        {/* Ending message — zIndex 3 (BEHIND the card rows at z-index 5).
+              Opacity builds while the last cards are still passing over it,
+              so when the final card sweeps off the right edge it uncovers
+              the heading like a curtain being pulled away. */}
         <div style={{
           position: 'absolute',
           top: 0, left: 0, right: 0, bottom: 0,
@@ -557,7 +566,7 @@ function TeamSection() {
           alignItems: 'center',
           justifyContent: 'center',
           opacity: endingOpacity,
-          zIndex: 10,
+          zIndex: 3,
           pointerEvents: 'none',
           padding: '0 24px',
         }}>
@@ -903,6 +912,15 @@ function HeroSection() {
 // --- Main App ---
 
 export default function App() {
+  // Initialize Locomotive Scroll v5 (Lenis-based smooth scroll).
+  // This wraps the native wheel/touch events with smooth inertia while
+  // preserving all window.scroll events that our sticky animations rely on.
+  const { scrollRef } = useLocomotiveScroll({
+    lerp: 0.06,
+    wheelMultiplier: 0.65,
+    touchMultiplier: 1.5,
+  });
+
   return (
     <div style={{
       background: '#000',
@@ -910,7 +928,6 @@ export default function App() {
       fontFamily: '"Inter", ui-sans-serif, system-ui, sans-serif',
       minHeight: '100vh',
     }}>
-      <style>{`html { scroll-behavior: smooth; }`}</style>
       <Navbar />
 
       <HeroSection />
@@ -923,22 +940,33 @@ export default function App() {
 
       {/* Footer */}
       <footer id="about" className="bg-black py-20 border-t border-white/10 overflow-hidden">
-        <div className="flex whitespace-nowrap mb-20">
-          <motion.div
-            animate={{ x: [0, -1000] }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            className="flex gap-20 items-center text-[15vw] font-black uppercase leading-none text-white/5 select-none"
+        {/* Marquee — uses CSS animation class (marquee-track) defined in index.css */}
+        <div className="flex whitespace-nowrap mb-20" style={{ overflow: 'hidden' }}>
+          <div
+            className="marquee-track flex gap-20 items-center text-[15vw] font-black uppercase leading-none text-white/5 select-none"
           >
             <span>IIIT Kota CodeBase</span>
             <Zap size={120} />
             <span>Open Source Club</span>
             <Lightbulb size={120} />
             <span>IIIT Kota CodeBase</span>
-          </motion.div>
+            {/* Duplicate for seamless loop */}
+            <span>IIIT Kota CodeBase</span>
+            <Zap size={120} />
+            <span>Open Source Club</span>
+            <Lightbulb size={120} />
+            <span>IIIT Kota CodeBase</span>
+          </div>
         </div>
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
-            <div className="col-span-1 md:col-span-2">
+            {/* Logo + tagline — fade up on enter */}
+            <div
+              className="col-span-1 md:col-span-2"
+              data-scroll
+              data-scroll-reveal="fade-up"
+              data-scroll-delay="1"
+            >
               <div className="flex items-center gap-2 mb-8">
                 <img src="./codebase.svg" alt="CodeBase Logo" className="w-10 h-10" />
                 <span className="font-black text-3xl tracking-tighter">CodeBase</span>
@@ -947,7 +975,12 @@ export default function App() {
                 The Free and Open Source Club of IIIT Kota. Building a better future through code.
               </p>
             </div>
-            <div>
+            {/* Club links — fade up with slight delay */}
+            <div
+              data-scroll
+              data-scroll-reveal="fade-up"
+              data-scroll-delay="3"
+            >
               <h4 className="font-black uppercase text-sm tracking-widest mb-6 text-[#ccff00]">Club</h4>
               <ul className="space-y-4 text-white/60 font-black uppercase tracking-tighter">
                 <li><a href="#members" className="hover:text-[#ccff00]">Members</a></li>
@@ -955,7 +988,12 @@ export default function App() {
                 <li><a href="#about" className="hover:text-[#ccff00]">About</a></li>
               </ul>
             </div>
-            <div>
+            {/* Connect links — fade up with more delay */}
+            <div
+              data-scroll
+              data-scroll-reveal="fade-up"
+              data-scroll-delay="5"
+            >
               <h4 className="font-black uppercase text-sm tracking-widest mb-6 text-[#1099B7]">Connect</h4>
               <ul className="space-y-4 text-white/60 font-black uppercase tracking-tighter">
                 <li><a href="https://github.com/ikcb" className="hover:text-[#1099B7]">GitHub</a></li>
