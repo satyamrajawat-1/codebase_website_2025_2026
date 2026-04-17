@@ -175,23 +175,36 @@ function ProjectsSection() {
   const t = Math.max(0, Math.min(1, rawIdx - stepIdx));
   const et = easeInOut(t);
 
-  // Position presets (% of viewport)
-  const BIG = { x: 38, y: 53, w: 50, h: 80 };
-  const PREV = { x: 18, y: 13, w: 9, h: 16 };
-  const NEXT = { x: 80, y: 80, w: 14, h: 24 };
+  // Position presets — 2% equal gap on both sides of BIG, PREV fully on-screen:
+  //
+  //   PREV center (20%, 20%), w=12vw  → left 14%, right 26%, top 10% (clears navbar)
+  //   BIG  center (50%, 53%), w=44vw  → left 28%, right 72%
+  //   NEXT center (80%, 82%), w=12vw  → left 74%, right 86%
+  //
+  //   Gap PREV→BIG : 28% - 26% = 2%  ✓
+  //   Gap BIG→NEXT : 74% - 72% = 2%  ✓  (symmetric)
+  const BIG  = { x: 50, y: 53, w: 44, h: 76 }; // main card — true center
+  const PREV = { x: 20, y: 20, w: 12, h: 20 }; // top-left thumbnail
+  const NEXT = { x: 80, y: 82, w: 12, h: 20 }; // bottom-right thumbnail
 
   // Get visual state for each card
   const getCardState = (i) => {
-    // Before transitions: first card growing phase
+    // Before transitions: first card ENTERS FROM BOTTOM-RIGHT (NEXT position),
+    // just like every subsequent "next → big" transition. This gives a consistent
+    // direction — all cards arrive from the bottom-right.
     if (progress < projStart) {
       if (i === 0) {
         return {
-          x: BIG.x, y: lerp(110, BIG.y, firstGrowEased),
-          w: lerp(14, BIG.w, firstGrowEased), h: lerp(24, BIG.h, firstGrowEased),
-          opacity: firstGrow > 0 ? 1 : 0, radius: 24, zIndex: 5,
+          x: lerp(NEXT.x, BIG.x, firstGrowEased),
+          y: lerp(NEXT.y, BIG.y, firstGrowEased),
+          w: lerp(NEXT.w, BIG.w, firstGrowEased),
+          h: lerp(NEXT.h, BIG.h, firstGrowEased),
+          opacity: firstGrow > 0 ? 1 : 0,
+          radius: lerp(16, 24, firstGrowEased),
+          zIndex: 5,
         };
       }
-      // Next card preview appears near end of grow phase
+      // Card 1 preview appears at NEXT (bottom-right) near the end of the grow
       if (i === 1 && firstGrow > 0.7) {
         const a = (firstGrow - 0.7) / 0.3;
         return {
