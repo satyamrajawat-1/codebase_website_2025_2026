@@ -144,8 +144,8 @@ export function HeroSection() {
             maxWidth: 700, padding: '0 24px',
             transform: 'translateY(220px)',
           }}>
-            The Free and Open Source Club of IIIT Kota.<br />
-            Promoting open source development and coding culture.
+            Cultivating engineering excellence.<br />
+            The premier multidisciplinary development ecosystem of IIIT Kota.
           </p>
         </div>
 
