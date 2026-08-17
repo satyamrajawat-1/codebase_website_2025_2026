@@ -1,17 +1,4 @@
-/**
- * useLocomotiveScroll — Custom hook for Locomotive Scroll v5 (Lenis-based)
- *
- * Strategy:
- * - Locomotive Scroll v5 uses Lenis under the hood.
- * - By default in "native" mode (wrapper: window), it intercepts wheel/touch
- *   events and then emits them via the native window scroll event.
- * - This means ALL existing window.addEventListener('scroll', ...) handlers
- *   in HeroSection, TeamSection, and ProjectsSection continue to work correctly
- *   because getBoundingClientRect() returns accurate values relative to the
- *   real scroll position.
- *
- * We also expose the `scroll` instance for optional data-scroll attribute animations.
- */
+
 
 import { useEffect, useRef } from 'react';
 import LocomotiveScroll from 'locomotive-scroll';
@@ -24,7 +11,7 @@ export function useLocomotiveScroll(options = {}) {
   const scrollRef = useRef(null);
 
   useEffect(() => {
-    // Small delay to ensure the DOM is fully painted
+   
     const timer = setTimeout(() => {
       const locoScroll = new LocomotiveScroll({
         lenisOptions: {

@@ -1,4 +1,4 @@
-// --- 2k23 Batch (Row 1 — sweeps right → left) ---
+
 export const row1Members = [
   { name: "Sanidhya Madeshia", role: "Coordinator",    color: "bg-[#ccff00]", img: "./2k23/sanidhya_madeshiya.jpeg", github: "#", linkedin: "#" },
   { name: "Yash Agarwal",      role: "Co-Coordinator", color: "bg-[#ff00ff]", img: "./2k23/yash_agrawal.jpeg",       github: "https://github.com/yashag710",          linkedin: "https://www.linkedin.com/in/yash-agarwalcr710/" },
@@ -10,7 +10,7 @@ export const row1Members = [
   { name: "Ashmit Singh",      role: "Core Member",    color: "bg-white",     img: "./2k23/ashmit_singh.jpeg",        github: "",                                      linkedin: "https://www.linkedin.com/in/ashmit-singh-40180329b/" },
 ];
 
-// --- 2k24 Batch (Row 2 — sweeps left → right) ---
+
 export const row2Members = [
   { name: "Dhananjay Mangal", role: "Social Media Lead",     color: "bg-[#00ffff]", img: "./2k24/dhananjay_mangal.jpeg", github: "#", linkedin: "#" },
   { name: "Akarsh Bibhaw",   role: "UI/UX Lead",             color: "bg-[#00ffff]", img: "./2k24/akarsh_bibhaw.jpeg",    github: "#", linkedin: "#" },

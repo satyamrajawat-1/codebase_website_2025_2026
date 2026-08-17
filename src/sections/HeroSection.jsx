@@ -1,16 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
 
-/**
- * HeroSection — fullscreen scroll-pinned hero.
- *
- * Animation layers (z-index stack):
- *   z:5   "IIIT kota" heading  (behind logo)
- *   z:10  CodeBase SVG logo    (center, scales up + un-rotates)
- *   z:15  "CodeBase" heading   (in front of logo)
- *   z:5   Subtitle paragraph
- *
- * Progress 0 → 1 tracks how far the user has scrolled through the 400vh container.
- */
 export function HeroSection() {
   const containerRef = useRef(null);
   const [progress, setProgress] = useState(0);
@@ -28,18 +17,14 @@ export function HeroSection() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // ---- Derived animation values ----
 
-  // Phase 1 (0 → 0.30): text moves up and fades out
   const textTranslateY = progress < 0.30 ? -(progress / 0.30) * 120 : -120;
   const textOpacityVal = progress < 0.05 ? 1
     : progress < 0.25 ? 1 - (progress - 0.05) / 0.20
       : 0;
 
-  // Scroll indicator fades first
   const scrollIndicatorVal = progress < 0.06 ? 1 - progress / 0.06 : 0;
 
-  // Phase 2 (0.25 → 0.72): logo scales 1 → 2
   let imageScaleVal;
   if (progress < 0.25) {
     imageScaleVal = 1;
@@ -49,7 +34,6 @@ export function HeroSection() {
     imageScaleVal = 2;
   }
 
-  // Logo un-rotates from -30° as user starts scrolling
   const imageRotation = progress < 0.30 ? -30 * (1 - progress / 0.30) : 0;
 
   return (
@@ -58,13 +42,13 @@ export function HeroSection() {
       ref={containerRef}
       style={{ position: 'relative', height: '400vh', background: '#000' }}
     >
-      {/* Sticky viewport */}
+      
       <div style={{
         position: 'sticky', top: 0, height: '100vh', width: '100%',
         background: '#000', overflow: 'hidden',
       }}>
 
-        {/* LAYER 1 — "IIIT kota" (behind logo, z:5) */}
+       
         <div style={{
           position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -85,7 +69,6 @@ export function HeroSection() {
           </h1>
         </div>
 
-        {/* LAYER 2 — CodeBase SVG logo (middle, z:10) */}
         <div style={{
           position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -105,7 +88,6 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* LAYER 3 — "CodeBase" heading (above logo, z:15) */}
         <div style={{
           position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -127,7 +109,6 @@ export function HeroSection() {
           </h1>
         </div>
 
-        {/* LAYER 4 — Subtitle (behind logo, z:5) */}
         <div style={{
           position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
           display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
@@ -149,7 +130,6 @@ export function HeroSection() {
           </p>
         </div>
 
-        {/* Scroll indicator */}
         <div style={{
           opacity: scrollIndicatorVal,
           position: 'absolute', bottom: 40, left: '50%',
